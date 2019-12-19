@@ -94,14 +94,12 @@
 				currentWidth1() {
 					let r = gcd(this.currentWidth1, this.currentHeight1)
 					this.aspectRatio = this.calculateAspectRatio(r, this.currentWidth1, this.currentHeight1);
-
-					this.resetHandler();
+					if(this.w2Value == 0) this.w2Value = ''
 				},
 				currentHeight1() {
 					let r = gcd(this.currentWidth1, this.currentHeight1)
 					this.aspectRatio = this.calculateAspectRatio(r, this.currentWidth1, this.currentHeight1);
-					this.resetHandler();
-					
+					if(this.h2Value == 0) this.h2Value = ''
 				}
 			},
 			computed: {
