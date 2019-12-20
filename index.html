@@ -133,6 +133,22 @@
 					image.classList.add('adjustHeight');
 					image.classList.remove('adjustWidth');
 				}
+				if(x.modImgDimensions.height < 200 && x.modImgDimensions.width < 200) {
+					if(x.modImgDimensions.height < x.modImgDimensions.width) {
+						let	image = document.querySelector('.helperMod');
+						image.classList.add('adjustHeight');
+						image.classList.remove('adjustWidth');
+					} else {
+						let	image = document.querySelector('.helperMod');
+						image.classList.add('adjustWidth');
+						image.classList.remove('adjustHeight');
+					}
+				} 
+				if(x.aspectRatioH == x.aspectRatioW) {
+					let	image = document.querySelector('.helperMod');
+					image.classList.add('adjustHeight');
+					image.classList.remove('adjustWidth');
+				}
 			}
 		},250); 
 
