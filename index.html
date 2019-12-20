@@ -4,6 +4,7 @@
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 	<style>
 		.helper {
@@ -12,11 +13,34 @@
 		    width: auto;
 		    height: auto;
 		    position: absolute;
-		    top: 0;
-		    bottom: 0;
-		    left: 0;
-		    right: 0;
+		    vertical-align: middle;
+		  	top: 50%;
+		  	left: 50%;
+		  	transform: translate(-50%,-50%);
 		    margin: auto;
+		}
+		.helperMod {
+			position: absolute;
+		  	top: 50%;
+		  	left: 50%;
+		  	transform: translate(-50%,-50%);
+		}
+		.adjustHeight {
+			height: 100% !important; 
+			width:auto !important; 
+		}
+		.adjustWidth {
+			width: 100% !important; 
+			height: auto !important; 
+		}
+		.aspectContainer {
+			height: 200px; 
+			line-height: 200px; 
+			width: 200px; 
+			border: 1px solid black; 
+			box-sizing: content-box; 
+			position: relative; 
+			overflow: hidden;
 		}
 	</style>
 </head>
@@ -55,28 +79,62 @@
 			<h4 class="mt-3">Your aspect ratio is: {{ aspectRatio }}</h4>
 
 			<div class="row mt-3 justify-content-center">
-				<div style="height: 200px; line-height: 200px; width: 200px; border: 1px solid black; box-sizing: content-box; position: relative;" 
+				<div class="aspectContainer" 
 				:style="{ height: aspectRatioH > aspectRatioW ? '200px' : aspectRatioH * 200/aspectRatioW + 'px', 
 				 lineHeight:  showSampleImgBool ? '0' : aspectRatioH > aspectRatioW ? '200px': aspectRatioH * 200/aspectRatioW + 'px',
 				 width: aspectRatioW > aspectRatioH ? 200 + 'px': aspectRatioW * 200 / aspectRatioH + 'px'}">
-					<img class="img-fluid helper" style="max-width: 100%; max-height: 100%; vertical-align: middle;" v-if="showSampleImgBool" :src="imgSource">
-					<span v-else  style="vertical-align: baseline; line-height: normal;" class="d-inline-block">{{ aspectRatio }} Aspect ratio</span>
+					<img class="img-fluid helper" v-if="showSampleImgBool && handleMismatches == '0'" :src="imgSource">
+					<img class="helperMod" v-if="showSampleImgBool && handleMismatches == '1'" :src="imgSource">
+					<span v-if="!showSampleImgBool"  style="vertical-align: baseline; line-height: normal;" class="d-inline-block">{{ aspectRatio }} Aspect ratio</span>
 				</div>
 				<div class="col-12">
 					<input type="checkbox" v-model="showSampleImgBool"> Show sample Image
 				</div>
 				<div v-if="showSampleImgBool" class="col-12">
-					Image Source: <input type="text" v-model="imgSource">
+					<div>
+						Image Source: <input type="text" v-model="imgSource">
+					</div>
+					<div style="border: 1px solid lightgrey; display: inline-block;" class="extras mt-3 p-3"> 
+						<p>How to handle the ratio mismatches:</p>
+						<div>
+							<span class="m-4">
+								<label for="default"><i style="font-size:24px" class="fas fa-image"></i><input id="default" class="m-2" type="radio" name="ratio" value="0" v-model="handleMismatches"></label>
+							</span>
+							<span class="m-4">
+								<label for="crop"><i style="font-size:24px" class="fas fa-crop"></i><input id="crop" class="m-2" type="radio" name="ratio" value="1" v-model="handleMismatches"></label>
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
 
 		</div>
 	</div>
-
+	<footer class="mt-4 text-center"><small>Copyright © 2019. All rights reserved.</small></footer>
 	<script>
 		function gcd(a, b) {
 			return (b == 0) ? a : gcd (b, a%b);
 		}
+
+		setInterval(function() {
+			if(x.handleMismatches == '1') {
+				if(x.modImgDimensions.height < 200) {
+					let	image = document.querySelector('.helperMod');
+					image.classList.add('adjustWidth');
+					image.classList.remove('adjustHeight');
+				}
+				if(x.modImgDimensions.width < 200){
+					let	image = document.querySelector('.helperMod');
+					image.classList.add('adjustHeight');
+					image.classList.remove('adjustWidth');
+				} 
+				if(x.modImgDimensions.height <200 && x.aspectRatioW == 2 &&  x.aspectRatioH == 3) {
+					let	image = document.querySelector('.helperMod');
+					image.classList.add('adjustHeight');
+					image.classList.remove('adjustWidth');
+				}
+			}
+		},250); 
 
 		x = new Vue({
 			el: '#app',
@@ -110,7 +168,10 @@
 				aspectRatioW: 4,
 				aspectRatioH: 3,
 				showSampleImgBool: false,
-				imgSource: './sample.jpg'
+				imgSource: './sample.jpg',
+				handleMismatches: '0',
+				modImgDimensions: { width: 200, height: 125 },
+				aspectContainer : {width: 200, height: 200}
 			},
 			methods: {
 				resetHandler() {
@@ -121,22 +182,38 @@
 					this.aspectRatioW = w/r;
 					this.aspectRatioH = h/r;
 					return w/r + ":" + h/r;
+				},
+				updateImageSize() {
+					if(this.handleMismatches == '1') {
+						let container = document.querySelector('.aspectContainer');
+						let	image = document.querySelector('.helperMod');
+						this.aspectContainer.width = image.width;
+						this.aspectContainer.height = image.height;
+						this.modImgDimensions.width = image.width;
+						this.modImgDimensions.height = image.height;
+					}
 				}
 			},
 			watch: {
 				selectedRatio() {
 					this.currentWidth1 = this.ratios[this.selectedRatio].w;
 					this.currentHeight1 = this.ratios[this.selectedRatio].h;
+					this.updateImageSize();
 				},
 				currentWidth1() {
 					let r = gcd(this.currentWidth1, this.currentHeight1)
 					this.aspectRatio = this.calculateAspectRatio(r, this.currentWidth1, this.currentHeight1);
 					if(this.w2Value == 0) this.w2Value = '';
+					this.updateImageSize();
 				},
 				currentHeight1() {
 					let r = gcd(this.currentWidth1, this.currentHeight1)
 					this.aspectRatio = this.calculateAspectRatio(r, this.currentWidth1, this.currentHeight1);
 					if(this.h2Value == 0) this.h2Value = '';
+					this.updateImageSize();
+				},
+				handleMismatches() {
+					this.updateImageSize();
 				}
 			},
 			computed: {
