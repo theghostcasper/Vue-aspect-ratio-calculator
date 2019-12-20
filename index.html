@@ -24,6 +24,9 @@
 		  	top: 50%;
 		  	left: 50%;
 		  	transform: translate(-50%,-50%);
+		  	width:200px;
+		  	height: 200px;
+		  	object-fit: cover;
 		}
 		.adjustHeight {
 			height: 100% !important; 
@@ -116,41 +119,6 @@
 			return (b == 0) ? a : gcd (b, a%b);
 		}
 
-		setInterval(function() {
-			if(x.handleMismatches == '1') {
-				if(x.modImgDimensions.height < 200) {
-					let	image = document.querySelector('.helperMod');
-					image.classList.add('adjustWidth');
-					image.classList.remove('adjustHeight');
-				}
-				if(x.modImgDimensions.width < 200){
-					let	image = document.querySelector('.helperMod');
-					image.classList.add('adjustHeight');
-					image.classList.remove('adjustWidth');
-				} 
-				if(x.modImgDimensions.height <200 && x.aspectRatioW == 2 &&  x.aspectRatioH == 3) {
-					let	image = document.querySelector('.helperMod');
-					image.classList.add('adjustHeight');
-					image.classList.remove('adjustWidth');
-				}
-				if(x.modImgDimensions.height < 200 && x.modImgDimensions.width < 200) {
-					if(x.modImgDimensions.height < x.modImgDimensions.width) {
-						let	image = document.querySelector('.helperMod');
-						image.classList.add('adjustHeight');
-						image.classList.remove('adjustWidth');
-					} else {
-						let	image = document.querySelector('.helperMod');
-						image.classList.add('adjustWidth');
-						image.classList.remove('adjustHeight');
-					}
-				} 
-				if(x.aspectRatioH == x.aspectRatioW) {
-					let	image = document.querySelector('.helperMod');
-					image.classList.add('adjustHeight');
-					image.classList.remove('adjustWidth');
-				}
-			}
-		},250); 
 
 		x = new Vue({
 			el: '#app',
