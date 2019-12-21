@@ -1,0 +1,59 @@
+/* RESET  */
+
+*,
+*::before,
+*::after {
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+}
+
+
+.sample-image {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    vertical-align: middle;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%,-50%);
+    margin: auto;
+}
+
+.sample-image-mod {
+	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%,-50%);
+  	margin: auto;
+  	object-fit: cover;
+}
+
+.full-height-aspect {
+	height: 100% !important; 
+	width:auto !important; 
+}
+.full-width-aspect {
+	width: 100% !important; 
+	height: auto !important; 
+}
+.aspect-ratio-box {
+	height: 200px; 
+	line-height: 200px; 
+	width: 200px; 
+	border: 1px solid black; 
+	position: relative; 
+	overflow: hidden;
+}
+
+.v-align {
+	vertical-align: baseline; 
+	line-height: normal;
+}
+
+.image-extra-tools {
+	border: 1px solid lightgrey;
+	display: inline-block;
+}
