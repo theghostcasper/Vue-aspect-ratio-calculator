@@ -41,7 +41,6 @@
 			line-height: 200px; 
 			width: 200px; 
 			border: 1px solid black; 
-			box-sizing: content-box; 
 			position: relative; 
 			overflow: hidden;
 		}
@@ -87,7 +86,7 @@
 				 lineHeight:  showSampleImgBool ? '0' : aspectRatioH > aspectRatioW ? '200px': aspectRatioH * 200/aspectRatioW + 'px',
 				 width: aspectRatioW > aspectRatioH ? 200 + 'px': aspectRatioW * 200 / aspectRatioH + 'px'}">
 					<img class="img-fluid helper" v-if="showSampleImgBool && handleMismatches == '0'" :src="imgSource">
-					<img class="helperMod" v-if="showSampleImgBool && handleMismatches == '1'" :src="imgSource">
+					<img  class="helperMod" v-if="showSampleImgBool && handleMismatches == '1'" :src="imgSource">
 					<span v-if="!showSampleImgBool"  style="vertical-align: baseline; line-height: normal;" class="d-inline-block">{{ aspectRatio }} Aspect ratio</span>
 				</div>
 				<div class="col-12">
@@ -118,7 +117,6 @@
 		function gcd(a, b) {
 			return (b == 0) ? a : gcd (b, a%b);
 		}
-
 
 		x = new Vue({
 			el: '#app',
@@ -154,8 +152,8 @@
 				showSampleImgBool: false,
 				imgSource: './sample.jpg',
 				handleMismatches: '0',
-				modImgDimensions: { width: 200, height: 125 },
-				aspectContainer : {width: 200, height: 200}
+				modImgDimensions: { width: 200, height: 200 },
+				// aspectContainer : {width: 200, height: 200}
 			},
 			methods: {
 				resetHandler() {
@@ -168,14 +166,17 @@
 					return w/r + ":" + h/r;
 				},
 				updateImageSize() {
-					if(this.handleMismatches == '1') {
-						let container = document.querySelector('.aspectContainer');
-						let	image = document.querySelector('.helperMod');
-						this.aspectContainer.width = image.width;
-						this.aspectContainer.height = image.height;
-						this.modImgDimensions.width = image.width;
-						this.modImgDimensions.height = image.height;
-					}
+					let self = this;
+					setTimeout(function() {
+						if(self.handleMismatches == '1') {
+							// let container = document.querySelector('.aspectContainer');
+							let	image = document.querySelector('.helperMod');
+							// this.aspectContainer.width = image.width;
+							// this.aspectContainer.height = image.height;
+							self.modImgDimensions.width = image.width;
+							self.modImgDimensions.height = image.height;
+						}
+					}, 30)
 				}
 			},
 			watch: {
