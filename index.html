@@ -87,7 +87,7 @@
 				 lineHeight:  showSampleImgBool ? '0' : aspectRatioH > aspectRatioW ? '200px': aspectRatioH * 200/aspectRatioW + 'px',
 				 width: aspectRatioW > aspectRatioH ? 200 + 'px': aspectRatioW * 200 / aspectRatioH + 'px'}">
 					<img class="img-fluid helper" v-if="showSampleImgBool && handleMismatches == '0'" :src="imgSource">
-					<img :style="{ objectFit: aspectRatio == '4:3' ? 'contain': 'cover' }" class="helperMod" v-if="showSampleImgBool && handleMismatches == '1'" :src="imgSource">
+					<img class="helperMod" v-if="showSampleImgBool && handleMismatches == '1'" :src="imgSource">
 					<span v-if="!showSampleImgBool"  style="vertical-align: baseline; line-height: normal;" class="d-inline-block">{{ aspectRatio }} Aspect ratio</span>
 				</div>
 				<div class="col-12">
